@@ -11,7 +11,7 @@ def index(request):
     client = Client.objects.filter(client_name=request.user.username).first()
     reservations = Reservation.objects.filter(client=client)
 
-    
+
     if request.method == 'POST':
         reserve_restaurant(request)
     return render(request, 'index.html', {'restaurants': restaurants, 'reservations': reservations})
@@ -85,12 +85,17 @@ def user_register(request):
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
-
+        is_staff = request.POST.get('is_staff')  
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
         else:
             try:
                 user = User.objects.create_user(username=username, password=password)
+
+                if is_staff:
+                    user.is_staff = True
+                    user.save()
+
                 messages.success(request, "Registration successful! You can log in now.")
                 return redirect('/') 
             except Exception as e:
@@ -102,3 +107,23 @@ def user_register(request):
 def user_logout(request):
     logout(request)
     return redirect("/")
+
+def cancel_reservation(request):
+    if request.method == 'POST':
+        reservation_id = request.POST.get('reservation_id')
+        reservation = Reservation.objects.filter(id=reservation_id).first()
+        
+        restaurant = reservation.restaurant
+        restaurant.restaurant_current_capacity += reservation.number_of_people
+        restaurant.save()
+
+
+        reservation.delete()
+        return redirect("/")
+    else:
+        return redirect("/")
+    
+
+def restaurant_pov(request):
+    reservations = Reservation.objects.all()
+    return render(request, 'restaurant_pov.html', {'reservations': reservations})

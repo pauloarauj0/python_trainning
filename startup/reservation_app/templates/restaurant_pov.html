@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All reservations</title>
+</head>
+<body>
+    <h1>Reservations by restaurant</h1>
+    {% for reservation in reservations %}
+       <li>  {{ reservation.restaurant.restaurant_name }} - 
+        | {{ reservation.client.client_name }}
+        Number of people: {{ reservation.number_of_people }} | 
+        Time: {{ reservation.reservation_date }}
+       </li>
+        {% endfor %}
+        <br>
+        <a href="/">Go back to home</a>
+    
+</body>
+</html>

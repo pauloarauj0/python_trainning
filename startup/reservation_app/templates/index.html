@@ -6,9 +6,10 @@
 <body>
     <h1>Welcome to the Restaurant Reservation</h1>
 
-    <p>
-        Regist a restaurant <a href="{% url 'register_restaurant' %}">here!</a>
-    </p>
+    <p>Regist a restaurant <a href="{% url 'register_restaurant' %}">here!</a></p>
+    {% if user.is_staff%}
+    <p>Restaurant POV <a href="{% url 'restaurant_pov' %}">here!</a></p>
+    {% endif %}
     
     {% if user.is_authenticated %}
         <p>Welcome, {{ user.username }}!</p>
@@ -74,6 +75,14 @@
         Number of people: {{ reservation.number_of_people }} | 
         Time: {{ reservation.reservation_date }}
        </li>
+       <br>
+       <form method="POST" action="{% url 'cancel_reservation' %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+        <button type="submit">Cancel reservation</button>
+        </form>
+        <br>
+        <br>
         {% endfor %}
 
     {% else %}
