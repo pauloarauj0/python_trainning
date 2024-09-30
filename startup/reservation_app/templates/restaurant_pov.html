@@ -11,7 +11,30 @@
         Number of people: {{ reservation.number_of_people }} | 
         Time: {{ reservation.reservation_date }}
        </li>
+       <form method="POST" action="{% url 'cancel_reservation' %}" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+        <button type="submit">Remove restaurant reservation</button>
+        </form>
+        <br>
+        <br>
         {% endfor %}
+
+        <hr>
+
+        <h1>List of all restaurants</h1>
+            {% for restaurant in restaurants %}
+            <li>{{ restaurant.restaurant_name }} | Max capacity:{{ restaurant.restaurant_max_capacity }} | Current capacity:{{ restaurant.restaurant_current_capacity }}</li>
+
+            <form method="POST" action="{% url 'remove_restaurant' %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
+            <button type="submit">Remove restaurant</button>
+            </form>
+            <br>
+            <br>
+            {% endfor %}
+
         <br>
         <a href="/">Go back to home</a>
     

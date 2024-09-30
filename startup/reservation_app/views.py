@@ -43,9 +43,12 @@ def reserve_restaurant(request):
     else:
         messages.error(request, 'Not enough tables available for the requested number of people.')
 
-
-
-
+def remove_restaurant(request):
+    if request.method == 'POST':
+        restaurant_id = request.POST.get('restaurant_id')
+        restaurant = Restaurant.objects.filter(id=restaurant_id).first()
+        restaurant.delete()
+        return redirect('/')
 
 def register_restaurant(request):
     if request.method == 'POST':
@@ -126,4 +129,6 @@ def cancel_reservation(request):
 
 def restaurant_pov(request):
     reservations = Reservation.objects.all()
-    return render(request, 'restaurant_pov.html', {'reservations': reservations})
+    restaurants = Restaurant.objects.all()
+
+    return render(request, 'restaurant_pov.html', {'reservations': reservations, 'restaurants':restaurants})
