@@ -37,9 +37,7 @@ def reserve_restaurant(request):
         
         restaurant.restaurant_current_capacity -= number_of_people
         restaurant.save()
-
-
-        return render(request, 'reservation_success.html')
+    
     else:
         messages.error(request, 'Not enough tables available for the requested number of people.')
 
