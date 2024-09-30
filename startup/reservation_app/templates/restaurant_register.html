@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regist your restaurant</title>
+</head>
+<body>
+    <h1>Restaurant information</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="restaurant_name">Restaurant Name:</label>
+        <input type="text" id="restaurant_name" name="restaurant_name" required><br>
+        <label for="restaurant_max_capacity"> What is your restaurant capacity?:</label>
+        <input type="number" id="restaurant_max_capacity" name="restaurant_max_capacity" required><br>
+
+
+        <button type="submit">Register</button>
+    </form>
+
+    <br>
+    <a href="/">Go back to home</a>
+
+</body>
+</html>
