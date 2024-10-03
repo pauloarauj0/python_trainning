@@ -4,7 +4,8 @@ version = "0.1.0"
 description = "This project aims to help people make a restaurant reservation."
 authors = ["Paulo Araujo"]
 license = "MIT"
-readme = "README.md"
+readme = "../README.md"
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
