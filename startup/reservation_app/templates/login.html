@@ -2,22 +2,28 @@
 <html>
 <head>
     <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'reservation_app/login_styles.css' %}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <h1>Login</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br>
+            
+            <button type="submit">Login</button>
+        </form>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
 </body>
 </html>
