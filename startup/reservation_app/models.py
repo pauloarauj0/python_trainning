@@ -39,8 +39,8 @@ class Reservation(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
     reservation_date = models.DateTimeField()
     number_of_people = models.IntegerField()
-
-
+    canceled = models.BooleanField()
+    ended = models.BooleanField()
 
 
     def __str__(self) -> str:

@@ -70,20 +70,36 @@
     <h2>My reservations </h2>
     
     {% for reservation in reservations %}
-       <li> {{ reservation.client.client_name }} - 
-        {{ reservation.restaurant.restaurant_name }} | 
-        Number of people: {{ reservation.number_of_people }} | 
-        Time: {{ reservation.reservation_date }}
-       </li>
-       <br>
-       <form method="POST" action="{% url 'cancel_reservation' %}" style="display: inline;">
-        {% csrf_token %}
-        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
-        <button type="submit">Cancel reservation</button>
-        </form>
-        <br>
-        <br>
+         {% if not reservation.canceled %}
+
+            <li> {{ reservation.client.client_name }} - 
+                {{ reservation.restaurant.restaurant_name }} | 
+                Number of people: {{ reservation.number_of_people }} | 
+                Time: {{ reservation.reservation_date }}
+            </li>
+            <br>
+            <form method="POST" action="{% url 'checkout_reservation' %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                <button type="submit">Cancel reservation</button>
+                </form>
+                <br>
+                <br>
+         {% endif %}
         {% endfor %}
+
+
+        <h2>My old reservations </h2>
+        {% for reservation in reservations %}
+        {% if reservation.canceled or reservation.ended%}
+
+           <li> {{ reservation.client.client_name }} - 
+               {{ reservation.restaurant.restaurant_name }} | 
+               Number of people: {{ reservation.number_of_people }} | 
+               Time: {{ reservation.reservation_date }}
+           </li>
+        {% endif %}
+       {% endfor %}
 
     {% else %}
 

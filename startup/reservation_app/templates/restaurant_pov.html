@@ -6,18 +6,20 @@
 <body>
     <h1>Reservations by restaurant</h1>
     {% for reservation in reservations %}
+        {% if not reservation.canceled %}
        <li>  {{ reservation.restaurant.restaurant_name }} - 
         | {{ reservation.client.client_name }}
         Number of people: {{ reservation.number_of_people }} | 
         Time: {{ reservation.reservation_date }}
        </li>
-       <form method="POST" action="{% url 'cancel_reservation' %}" style="display: inline;">
+       <form method="POST" action="{% url 'checkout_reservation' %}" style="display: inline;">
         {% csrf_token %}
         <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
-        <button type="submit">Remove restaurant reservation</button>
+        <button type="submit"> Check out </button>
         </form>
         <br>
         <br>
+        {% endif %}
         {% endfor %}
 
         <hr>
@@ -33,6 +35,7 @@
             </form>
             <br>
             <br>
+            
             {% endfor %}
 
         <br>

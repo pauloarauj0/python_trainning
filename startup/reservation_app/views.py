@@ -27,15 +27,26 @@ def reserve_restaurant(request):
     client, created = Client.objects.get_or_create(client_name=client_name)
     restaurant = Restaurant.objects.get(id=restaurant_id)
 
+    tables_needed = number_of_people // 4
+    
+    if number_of_people % 4 > 0:
+        tables_needed +=1
+    
+    capacity_reserved = tables_needed * 4
+
+
+
     if restaurant.restaurant_current_capacity >= number_of_people:
         Reservation.objects.create(
-                client=client,
-                restaurant=restaurant,
-                reservation_date=reservation_date,
-                number_of_people=number_of_people
+                client = client,
+                restaurant = restaurant,
+                reservation_date = reservation_date,
+                number_of_people = number_of_people,
+                canceled = False,
+                ended = False
             )
         
-        restaurant.restaurant_current_capacity -= number_of_people
+        restaurant.restaurant_current_capacity -= capacity_reserved
         restaurant.save()
     
     else:
@@ -109,17 +120,29 @@ def user_logout(request):
     logout(request)
     return redirect("/")
 
-def cancel_reservation(request):
+def checkout_reservation(request):
     if request.method == 'POST':
         reservation_id = request.POST.get('reservation_id')
         reservation = Reservation.objects.filter(id=reservation_id).first()
         
         restaurant = reservation.restaurant
-        restaurant.restaurant_current_capacity += reservation.number_of_people
+
+        tables_needed = reservation.number_of_people // 4
+    
+        if reservation.number_of_people % 4 > 0:
+            tables_needed +=1
+        
+        capacity_reserved = tables_needed * 4
+
+        reservation.canceled = True
+        reservation.ended = True
+        reservation.save()
+
+        restaurant.restaurant_current_capacity += capacity_reserved
         restaurant.save()
 
 
-        reservation.delete()
+        #reservation.delete()
         return redirect("/")
     else:
         return redirect("/")
